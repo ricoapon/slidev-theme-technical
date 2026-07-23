@@ -1,0 +1,36 @@
+{
+  "name": "@ricoapon/slidev-theme-technical",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Personal Slidev theme for technical talks.",
+  "keywords": [
+    "slidev-theme",
+    "slidev"
+  ],
+  "license": "MIT",
+  "author": "Rico Apon",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ricoapon/slidev-theme-technical.git"
+  },
+  "homepage": "https://github.com/ricoapon/slidev-theme-technical#readme",
+  "bugs": "https://github.com/ricoapon/slidev-theme-technical/issues",
+  "files": [
+    "layouts",
+    "components",
+    "styles",
+    "utils"
+  ],
+  "engines": {
+    "slidev": ">=0.48.0"
+  },
+  "slidev": {
+    "defaults": {
+      "colorSchema": "dark",
+      "aspectRatio": "16/9"
+    }
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0"
+  }
+}
