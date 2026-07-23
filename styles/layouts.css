@@ -1,0 +1,124 @@
+/* ------------------------------------------------------------------ *
+ * layouts.css — the fixed, small layout vocabulary (STYLE_GUIDE §5).
+ * cover · section · statement · default · two-cols · full · center
+ * ------------------------------------------------------------------ */
+
+/* Every layout is a centered vertical flex column with the shared padding —
+ * `default` and `two-cols` need nothing beyond this. In `full` the flexible
+ * hero absorbs all the free space, so the centering is a no-op there. */
+.slidev-layout {
+  padding: 3rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---- cover — title slide / deck identity ---------------------------- */
+.slidev-layout.cover {
+  padding: 3rem 4rem;
+}
+
+.slidev-layout.cover h1 {
+  font-size: var(--fs-display);
+  font-weight: 600;
+  line-height: 1.1;
+  /* extra room so the accent underline never crowds the subtitle below */
+  margin: 0 0 2rem;
+}
+
+.slidev-layout.cover h1::before {
+  content: var(--prompt-glyph);
+  color: var(--accent);
+  margin-right: 0.75rem;
+  font-weight: 700;
+}
+
+.slidev-layout.cover p {
+  color: var(--muted);
+  font-size: 1.15rem;
+  max-width: 46ch;
+}
+
+/* ---- section — the "breath" divider slides -------------------------- */
+.slidev-layout.section {
+  align-items: flex-start;
+  padding: 3rem 4rem;
+}
+
+.slidev-layout.section .section-no {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.slidev-layout.section h1 {
+  font-size: var(--fs-display);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ---- statement / center — centered content -------------------------- */
+.slidev-layout.statement,
+.slidev-layout.center {
+  align-items: center;
+  text-align: center;
+}
+
+.slidev-layout.statement {
+  padding: 3rem 6rem;
+}
+
+.slidev-layout.statement h1 {
+  font-size: var(--fs-display);
+  font-weight: 600;
+  line-height: 1.2;
+  max-width: 22ch;
+  margin: 0;
+}
+
+.slidev-layout.statement p {
+  color: var(--muted);
+  margin-top: 1.2rem;
+}
+
+/* ---- two-cols — text beside a surface ------------------------------- */
+.slidev-layout.two-cols .tc-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.slidev-layout.two-cols .col-left,
+.slidev-layout.two-cols .col-right {
+  min-width: 0;
+}
+
+/* ---- full — a single surface filling the screen (hero mode) --------- */
+.slidev-layout.full {
+  padding: 2.5rem 3rem;
+}
+
+.slidev-layout.full h1 {
+  flex: 0 0 auto;
+  margin-bottom: 1.25rem;
+}
+
+/* The hero surface grows to fill the remaining space. */
+.slidev-layout.full > :not(h1) {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.slidev-layout.full .term {
+  height: 100%;
+}
+
+/* ---- center — a diagram / figure that wants to be centered ---------- */
+.slidev-layout.center .mermaid,
+.slidev-layout.center .term,
+.slidev-layout.center img {
+  margin: 0 auto;
+}

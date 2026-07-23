@@ -1,0 +1,144 @@
+/* ------------------------------------------------------------------ *
+ * code.css — framed code + the one window chrome (STYLE_GUIDE §6).
+ *
+ * Every fenced code block is framed automatically with the window chrome:
+ * a slim title bar with three small traffic-light dots. The <Terminal>
+ * component reuses the SAME chrome — the dots and bar background come from the
+ * shared tokens in base.css (--chrome-dots, --chrome-bar-bg) — so any
+ * combination looks native. (There is no <Window> component: a code block is
+ * labelled with a native fence `title="…"`, not a wrapper — see setup/shiki.ts.)
+ * ------------------------------------------------------------------ */
+
+/* ---- Inline code — quiet, hairline-bordered ---- */
+.slidev-layout :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1em 0.4em;
+  color: var(--text);
+}
+
+/* ---- Fenced code blocks: auto-framed with the window chrome ----
+ * The chrome lives on the (non-scrolling) .slidev-code-wrapper, and the inner
+ * <pre> scrolls beneath it — so the title bar never scrolls away and never
+ * covers the first line. */
+.slidev-layout .slidev-code-wrapper {
+  position: relative;
+  font-size: var(--fs-code);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding-top: var(--chrome-h);
+  /* !important: Slidev sets a 4px margin on .slidev-code-wrapper that wins on
+   * cascade order otherwise, so the gap below code never opens up. Matches the
+   * paragraph bottom-margin so spacing below code reads the same as below text. */
+  margin: 0 0 0.9rem !important;
+  overflow: hidden;
+}
+
+/* the slim title bar, with the three traffic-light dots painted straight onto
+ * it (see --chrome-dots in base.css — a background image, so the dots stay
+ * perfectly round on scaled slides where a border-radius:50% box goes oval). */
+.slidev-layout .slidev-code-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--chrome-h);
+  background-color: var(--chrome-bar-bg);
+  background-image: var(--chrome-dots);
+  background-repeat: no-repeat;
+  background-origin: border-box;
+  border-bottom: 1px solid var(--border);
+}
+
+.slidev-layout pre.slidev-code {
+  background: transparent !important;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 0.9rem 1.2rem;
+  line-height: 1.55;
+  overflow: auto;
+}
+
+/* Native code-block title: ```lang title="file.ts" → shown in the chrome bar.
+ * The attribute lands on the (static) <pre>, so its ::before positions against
+ * the (relative) wrapper and sits in the bar next to the dots. */
+.slidev-layout pre.slidev-code[data-title]::before {
+  content: attr(data-title);
+  position: absolute;
+  top: 0;
+  left: var(--chrome-title-x);
+  height: var(--chrome-h);
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+/* Line highlighting — the walked-through line gets the accent. */
+.slidev-layout .slidev-code .line.highlighted {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+.slidev-layout .slidev-code .line.highlighted.dimmed,
+.slidev-layout .slidev-code .line:not(.highlighted).dimmed {
+  opacity: 0.4;
+}
+
+/* ------------------------------------------------------------------ *
+ * Mermaid — themed via the CSS tokens so diagrams match every other
+ * surface: surface-colored nodes, mono text, hairline lines, and the
+ * accent reserved for the focused/active node (add class `.accent` via
+ * `:::` styling or a classDef named `accent`).
+ * ------------------------------------------------------------------ */
+.slidev-layout .mermaid {
+  --mermaid-font-family: var(--font-mono);
+  font-family: var(--font-mono);
+}
+
+.slidev-layout .mermaid svg {
+  max-width: 100%;
+}
+
+.slidev-layout .mermaid .node rect,
+.slidev-layout .mermaid .node circle,
+.slidev-layout .mermaid .node polygon,
+.slidev-layout .mermaid .node path,
+.slidev-layout .mermaid .cluster rect {
+  fill: var(--surface) !important;
+  stroke: var(--muted) !important;
+  stroke-width: 1.5px !important;
+}
+
+.slidev-layout .mermaid .nodeLabel,
+.slidev-layout .mermaid .edgeLabel,
+.slidev-layout .mermaid .label,
+.slidev-layout .mermaid span {
+  color: var(--text) !important;
+  fill: var(--text) !important;
+  background: transparent !important;
+}
+
+.slidev-layout .mermaid .edgePath .path,
+.slidev-layout .mermaid line,
+.slidev-layout .mermaid .flowchart-link {
+  stroke: var(--text) !important;
+  stroke-width: 1.75px !important;
+}
+
+.slidev-layout .mermaid marker path,
+.slidev-layout .mermaid .arrowheadPath {
+  fill: var(--text) !important;
+  stroke: var(--text) !important;
+}
+
+/* NOTE: the focused/accent node (`class NodeId accent`) is themed in
+ * setup/mermaid.ts via themeCSS (a <style> injected inside the SVG). The
+ * equivalent external rule does NOT take effect here, so it is intentionally
+ * not duplicated in this file. */

@@ -17,14 +17,16 @@ couple of small components — so you *compose* slides from them rather than han
 
 ---
 
-## 0. Before you build — confirm two choices
+## 0. Before you build — confirm the per-deck choices
 
-Most of this guide is fixed. A couple of things are decided fresh per deck. If the user hasn't
-stated them, **ask first** (and if they don't care, pick the recommended default and say which):
+Most of this guide is fixed. A few things are decided fresh per deck. If the user hasn't stated
+them, **ask first** (and if they don't care, pick the recommended default and say which):
 
 1. **Accent color** — a single hex value, the deck's signature hue. Default `#BD93F9` (purple).
    (See §3.)
-2. **Delivery** — offline (bundle fonts locally, the default) or online (CDN fonts, remote embeds
+2. **Prompt glyph** — the accent glyph placed before titles: `❯` (default), `$`, or `#`. Set once
+   via `themeConfig.glyph`. (See §3/§4.)
+3. **Delivery** — offline (bundle fonts locally, the default) or online (CDN fonts, remote embeds
    allowed)? (See §7.)
 
 Everything else in this guide is fixed and does not need to be asked about.
@@ -134,8 +136,10 @@ If the user doesn't care, use `#BD93F9` and say so.
 The accent hue is used **freely and consistently** — this is not a "use it sparingly" style. Good
 recurring places for it:
 
-- A colored prompt glyph — `$`, `❯`, or `#` — before slide titles and section labels. This is a
-  **signature motif** of the theme: titles read like a shell prompt or a comment.
+- A colored prompt glyph — `❯` (default), `$`, or `#` — before slide titles and section labels.
+  This is a **signature motif** of the theme: titles read like a shell prompt or a comment. The
+  glyph is a per-deck choice, set once via `themeConfig.glyph`; it is applied consistently to every
+  title automatically.
 - The caret/prompt and current path inside terminals.
 - The active/highlighted line or token in code.
 - The focused node of a diagram, a window's focus ring, underlines, links.
@@ -234,8 +238,8 @@ The whole color system is exposed as CSS variables so components and code read f
   projectors. Avoid Bold walls of text.
 - **Sentence case for titles** (not Title Case, not ALL CAPS). Calmer, more modern, and it reads
   like a comment or a commit message. ALL CAPS is allowed only for tiny labels/tags (`DEMO`, `V2`).
-- **The prompt-glyph motif:** titles may be preceded by an accent-colored `$`, `❯`, or `#`
-  (§3). Pick one glyph and use it consistently across the deck.
+- **The prompt-glyph motif:** titles are preceded by an accent-colored glyph — `❯` (default), `$`,
+  or `#` — chosen once per deck via `themeConfig.glyph` (§3) and applied to every title.
 - **No more than two visible type sizes** on a normal content slide (title + body). Code has its
   own size, set by the surface.
 - **Tabular everything.** Because it's mono, numbers and columns align for free — lean into it for
@@ -285,7 +289,7 @@ thumb: **no more than two or three dense surfaces before a breath slide.**
 ## 6. The surfaces that fill the screen
 
 This is the heart of the theme and the answer to "what fills a sparse slide." The set is
-deliberately tiny: **styled code blocks, a `<Window>` frame, a `<Terminal>`, a `<Cursor>`, and
+deliberately tiny: **styled code blocks (optionally titled), a `<Terminal>`, a `<Cursor>`, and
 themed Mermaid diagrams.** They all share one visual language — same mono font, near-black
 surface, single accent, one corner radius, hairline borders — so any combination looks native.
 
@@ -303,45 +307,40 @@ Markdown code block and it renders inside the frame, with Shiki highlighting, lo
 component, no effort:
 
 ````md
-```java {2|3-5|all}
+```java
 record User(String id, String name) {}
 ```
 ````
 
-All of Slidev's native code powers work as-is inside the frame: line highlighting `{1,3-5|all}`,
+Slidev's native code powers all work as-is inside the frame: line highlighting `{1,3-5|all}`,
 **Shiki Magic Move** (```` ```md magic-move ````) for step-by-step code morphs, `<v-clicks>`, and
-Monaco for live coding. This is the baseline that guarantees *"when a code block is added, it looks
-the same."*
+Monaco for live coding. These are **Slidev features, not the theme's** — the theme only supplies
+the frame and guarantees *"when a code block is added, it looks the same."* (Don't lean on line
+highlighting in exported/screenshot decks: it auto-scrolls and reads as jumpy when static.)
 
-### 6.2 `<Window>` — the frame around anything
+### 6.2 Naming a code block
 
-`<Window>` is the same chrome exposed as a component, for when you want a **title/filename label**
-or want to frame non-code content. A bare code block (6.1) shows no label; wrap it in `<Window>`
-to add one:
+To label a surface with a filename or path, add a `title` to the fence — it shows in the chrome
+bar. This is a property of the **code block itself**, so no wrapper component is needed:
 
 ````md
-<Window title="UserService.java">
-
-```java {2|3-5|all}
-record User(String id, String name) {}
+```java title="UserService.java"
+public User findById(String id) { ... }
 ```
-
-</Window>
 ````
 
-Props: `title` (label in the bar, e.g. a filename). That's it.
+(Implemented as a Shiki transformer in the theme; `filename="…"` works as an alias.)
 
-### 6.3 `<Terminal>` — a live shell session
+### 6.3 `<Terminal>` — code rendered as shell output
 
-`<Terminal>` uses the **same frame** but formats its contents as a shell session — which a plain
-highlighted `bash` block cannot do on its own. This is your signature filler: a statement plus one
-terminal is a great slide.
+`<Terminal>` is **optional**. A plain `bash` code block is perfectly fine and gets Shiki
+highlighting like any other. It is **not a live shell** — it is a styled representation of shell
+*output*. Reach for it only when you want shell **semantics** a highlighted block can't express:
 
 - **Prompt lines** start with an accent caret (`❯` by default) and show the typed command.
 - **Output lines** are muted; success/error/warning use the semantic colors (§3).
-- **Reveal-friendly:** each line (or command+output group) can appear on click, so you can "run"
-  the session live during the talk.
-- A blinking cursor (§6.4) sits at the end of the active line.
+- **Reveal-friendly:** each line can appear on click, so you can step through the output.
+- Optionally a blinking cursor (§6.4) sits at the end of the last line.
 
 ````md
 <Terminal title="~/app">
@@ -356,13 +355,13 @@ terminal is a great slide.
 </Terminal>
 ````
 
-Props: `title`, `prompt` (`❯`/`$`/custom), `reveal` (bind lines to clicks), `fill` (grow to the
-slide for `full` layout).
+Props: `title`, `prompt` (`❯`/`$`/custom), `reveal` (bind lines to clicks), `cursor` (trailing
+blinking cursor), `fill` (grow to the slide for `full` layout).
 
-> **Why the frame is shared but the contents differ:** the chrome is identical to code windows —
-> that is the consistency you want. The *inside* is honestly different (a shell session, not a
-> source file), and that difference is useful signal: the audience instantly knows "terminal" vs.
-> "code." Unifying the frame while letting content be what it is gets both consistency and clarity.
+> **Code block or terminal?** Use a plain (optionally titled) code block for source and for shell
+> commands you don't need to color. Use `<Terminal>` when the *output states* — passing/failing,
+> added/removed — carry the point and you want them colored. Both share the exact same chrome, so
+> they sit side by side without clashing.
 
 ### 6.4 `<Cursor>` — blinking cursor
 
@@ -451,6 +450,7 @@ The entire per-deck setup lives in the deck's headmatter:
 theme: technical
 themeConfig:
   accent: '#BD93F9'          # a single hex value — the deck's one accent hue
+  glyph: '❯'                 # the prompt glyph before titles: ❯ (default), $ or #
 transition: fade
 ---
 ```
@@ -469,16 +469,16 @@ is this **single personal theme** rather than a third-party theme plus per-deck 
 A compact target for whoever generates the theme. Keep authoring in Markdown; keep props few. One
 window/terminal chrome style throughout.
 
-| Surface       | Key props                                 | Notes                                                                                      |
-|---------------|-------------------------------------------|--------------------------------------------------------------------------------------------|
-| Code block    | (native Markdown)                         | Auto-framed with the window chrome; preserves line-highlight / magic-move / Monaco         |
-| `<Window>`    | `title`                                   | Same chrome as a component; adds a filename/label or frames non-code content               |
-| `<Terminal>`  | `title`, `prompt`, `reveal`, `fill`       | Same frame; shell semantics — accent caret, semantic output, click-reveal, trailing cursor |
-| `<Cursor>`    | `color` (`accent` default / `text` / hex) | CSS-only blinking block cursor; always block, always blinks                                |
-| Mermaid theme | (global)                                  | Themed via CSS tokens; active node = accent                                                |
+| Surface       | Key props                                   | Notes                                                                                        |
+|---------------|---------------------------------------------|----------------------------------------------------------------------------------------------|
+| Code block    | `title="…"` (native fence meta)             | Auto-framed with the window chrome; `title` shows a filename; preserves highlight/magic-move |
+| `<Terminal>`  | `title`, `prompt`, `reveal`, `cursor`, `fill` | Same frame; shell semantics — accent caret, semantic output, click-reveal, trailing cursor  |
+| `<Cursor>`    | `color` (`accent` default / `text` / hex)   | CSS-only blinking block cursor; always block, always blinks                                  |
+| Mermaid theme | (global)                                    | Themed via CSS tokens; focused node (`class X accent`) = accent                              |
 
 Layouts to ship: `cover`, `section`, `statement`, `default`, `two-cols`, `full`, `center` (§5).
-Tokens to expose as CSS variables: the color tokens (§3) and the type scale (§4).
+Tokens to expose as CSS variables: the color tokens (§3) and the type scale (§4). Per-deck
+`themeConfig`: `accent` (hex) and `glyph` (`❯`/`$`/`#`).
 
 ---
 

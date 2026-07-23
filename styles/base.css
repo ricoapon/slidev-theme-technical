@@ -1,0 +1,319 @@
+/* ------------------------------------------------------------------ *
+ * base.css — the color + type system, and the monochrome-mono defaults.
+ *
+ * This is a DARK-ONLY theme. The near-black surface is the identity, not a
+ * switchable mode; there is no light palette to configure.
+ * ------------------------------------------------------------------ */
+
+:root {
+  /* The single typeface — one place to change the whole stack (STYLE_GUIDE §4). */
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Monochrome base — structure. No meaning. (STYLE_GUIDE §3) */
+  --bg: #0d0e12;
+  --surface: #16181d;
+  --text: #e8e8ea;
+  --muted: #8a8f98;
+  --faint: #5a5f68;
+  --border: #24262d;
+
+  /* Bounded functional palette — semantic colors, always the same meaning. */
+  --c-success: #50fa7b; /* ✓  + added lines  passing  tip */
+  --c-error: #ff5555;   /* ✗  - removed lines  stderr  danger */
+  --c-warning: #e3b341;  /* warnings, deprecations */
+
+  /* Type scale (STYLE_GUIDE §4). */
+  --fs-display: 3.5rem;
+  --fs-title: 2.25rem;
+  --fs-body: 1.05rem;
+  --fs-code: 0.95rem;
+  --fs-caption: 0.8rem;
+
+  /* One corner radius + shared chrome metrics (in rem, so the bar height and
+   * dot size never shift with the surrounding font-size — that mismatch is what
+   * made the title drift and the dots look oval). */
+  --radius: 8px;
+  --chrome-h: 2.4rem;
+  --dot: 0.7rem;          /* traffic-light dot diameter */
+  --chrome-pad: 1.1rem;   /* left inset of the first dot */
+  --chrome-gap: 1.25rem;  /* dot center-to-center */
+  --chrome-title-x: 4.9rem; /* where the title clears the dots */
+  /* The title bar sits a touch darker than the surface below it. Defined once
+   * and shared by the code-block chrome and <Terminal> so they never diverge. */
+  --chrome-bar-bg: color-mix(in srgb, var(--surface) 70%, #000 30%);
+
+  /* The three traffic-light dots, painted ONCE as a background image and reused
+   * by the code-block chrome and <Terminal> (see components/). Each dot is a
+   * radial-gradient disc — defined by a radius, so it is always perfectly round
+   * regardless of the slide's scale transform. An element with border-radius:50%
+   * does NOT survive that: on a scaled slide the box rasterizes ~10% taller than
+   * wide (oval). Painting from the border-box left edge (background-origin) keeps
+   * the dots aligned whether or not the bar has left padding. */
+  --chrome-dots:
+    radial-gradient(circle at calc(var(--chrome-pad) + var(--dot) / 2) 50%,
+      var(--c-error) calc(var(--dot) / 2 - 0.5px), transparent calc(var(--dot) / 2)),
+    radial-gradient(circle at calc(var(--chrome-pad) + var(--dot) / 2 + var(--chrome-gap)) 50%,
+      var(--c-warning) calc(var(--dot) / 2 - 0.5px), transparent calc(var(--dot) / 2)),
+    radial-gradient(circle at calc(var(--chrome-pad) + var(--dot) / 2 + 2 * var(--chrome-gap)) 50%,
+      var(--c-success) calc(var(--dot) / 2 - 0.5px), transparent calc(var(--dot) / 2));
+
+  /* The signature prompt glyph placed before titles. Pick one; keep it. */
+  --prompt-glyph: '❯';
+}
+
+/*
+ * The one decision per deck — accent — arrives as `themeConfig.accent`, which
+ * Slidev injects as a CSS variable on <body> (NOT :root), so it must be read
+ * there. Fallback is the recommended default purple. `--slidev-theme-primary`
+ * wires our accent into Slidev's built-in primary hook.
+ */
+body {
+  --accent: var(--slidev-theme-accent, #bd93f9);
+  --slidev-theme-primary: var(--accent);
+
+  font-family: var(--font-mono);
+  font-feature-settings: 'liga' 1, 'calt' 1; /* coding ligatures on, always */
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* The background is this solid color — no layer, gradient, pattern or texture.
+ * height:100% so the flex-centering in the layouts has room to work (Slidev's
+ * own .slidev-layout is height:auto and would collapse to content). */
+.slidev-layout {
+  height: 100%;
+  box-sizing: border-box;
+  background: var(--bg);
+  color: var(--text);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+/* Everything is JetBrains Mono (STYLE_GUIDE §1/§4). Slidev applies its default
+ * sans stack to `.slidev-layout`, which every heading/body element inherits.
+ * The doubled class (specificity 0,2,0) re-asserts the mono font over that rule
+ * regardless of stylesheet order, so it cascades to all descendants. The mono
+ * grid IS the aesthetic — no sans companion. */
+.slidev-layout.slidev-layout {
+  font-family: var(--font-mono);
+}
+
+/* ---- Titles: big + confident, sentence case, medium/semibold weight ---- */
+.slidev-layout h1 {
+  font-size: var(--fs-title);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 0 0 1.25rem;
+}
+
+.slidev-layout h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+}
+
+.slidev-layout h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 0 0 0.5rem;
+}
+
+/*
+ * The prompt-glyph motif — an accent-colored `❯` before content titles, so a
+ * title reads like a shell prompt. Applied to the content layouts; the cover,
+ * section and statement layouts get their own treatment.
+ */
+.slidev-layout.default h1::before,
+.slidev-layout.two-cols h1::before,
+.slidev-layout.full h1::before,
+.slidev-layout.center h1::before {
+  content: var(--prompt-glyph);
+  color: var(--accent);
+  font-weight: 700;
+  margin-right: 0.6rem;
+}
+
+/* ---- Body text ---- */
+.slidev-layout p {
+  margin: 0 0 0.9rem;
+}
+
+.slidev-layout p,
+.slidev-layout li {
+  color: var(--text);
+}
+
+/* Supporting text stays small + secondary — the size contrast IS the design. */
+.slidev-layout .subtitle,
+.slidev-layout .muted {
+  color: var(--muted);
+  font-size: var(--fs-body);
+}
+
+.slidev-layout small,
+.slidev-layout .caption {
+  color: var(--faint);
+  font-size: var(--fs-caption);
+}
+
+/* ---- Lists — square markers in the accent, tight rhythm ---- */
+.slidev-layout ul,
+.slidev-layout ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.slidev-layout li {
+  margin: 0.45rem 0;
+}
+
+.slidev-layout ul > li {
+  list-style: none;
+  position: relative;
+}
+
+.slidev-layout ul > li::before {
+  content: '▪';
+  color: var(--accent);
+  position: absolute;
+  left: -1.3rem;
+}
+
+.slidev-layout ol {
+  list-style: none;
+  counter-reset: step;
+}
+
+.slidev-layout ol > li {
+  counter-increment: step;
+  position: relative;
+}
+
+.slidev-layout ol > li::before {
+  content: counter(step);
+  color: var(--accent);
+  position: absolute;
+  left: -1.5rem;
+  font-weight: 600;
+}
+
+/* ---- Emphasis, links, underline ---- */
+.slidev-layout strong,
+.slidev-layout .accent {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.slidev-layout em {
+  color: var(--muted);
+  font-style: normal;
+  border-bottom: 1px dashed var(--border);
+}
+
+.slidev-layout u {
+  text-decoration: none;
+  border-bottom: 6px solid var(--accent);
+  padding-bottom: 2px;
+}
+
+.slidev-layout a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+/* ---- Tabular everything — mono means columns align for free ---- */
+.slidev-layout table {
+  border-collapse: collapse;
+  font-size: var(--fs-body);
+  margin: 0.5rem 0;
+}
+
+.slidev-layout th,
+.slidev-layout td {
+  text-align: left;
+  padding: 0.4rem 1.1rem 0.4rem 0;
+  border-bottom: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+
+.slidev-layout th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ---- Small labels / tags — ALL CAPS is allowed here only ---- */
+.slidev-layout .tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+}
+
+/* ---- Callouts / admonitions — a colored left rule + label, never a fill.
+ * note/info = accent, tip = green, warning = amber, danger = red. No new hues.
+ * The default (a bare markdown blockquote) is a note/info callout. ---- */
+/* Each kind sets one --callout-color; the left rule and the label both read it,
+ * so the semantic color lives in a single place per kind (default = accent). */
+.slidev-layout blockquote,
+.slidev-layout .callout {
+  border-left: 3px solid var(--callout-color, var(--accent));
+  background: transparent;
+  padding: 0.2rem 0 0.2rem 1rem;
+  margin: 0.9rem 0;
+  color: var(--muted);
+  font-style: normal;
+}
+
+.slidev-layout blockquote > :first-child,
+.slidev-layout .callout > :first-child {
+  margin-top: 0;
+}
+
+.slidev-layout blockquote > :last-child,
+.slidev-layout .callout > :last-child {
+  margin-bottom: 0;
+}
+
+.slidev-layout .callout.tip {
+  --callout-color: var(--c-success);
+}
+.slidev-layout .callout.warning {
+  --callout-color: var(--c-warning);
+}
+.slidev-layout .callout.danger {
+  --callout-color: var(--c-error);
+}
+
+.slidev-layout .callout-label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--callout-color, var(--accent));
+  margin-bottom: 0.25rem;
+}
+
+/* Inline good/bad marks reuse the semantic set. */
+.slidev-layout .ok {
+  color: var(--c-success);
+}
+.slidev-layout .bad {
+  color: var(--c-error);
+}
+.slidev-layout .warn {
+  color: var(--c-warning);
+}
+
+/* Slidev's footer/page-number kept faint. */
+.slidev-layout .slidev-page {
+  color: var(--faint);
+}

@@ -43,20 +43,18 @@ npm run export    # PDF
 ## README screenshots
 
 The images in the root [`README.md`](../README.md) are generated from this deck —
-one PNG per slide, in **both** color modes, so the deck doubles as a
-one-slide-per-layout showcase across light and dark.
+one PNG per slide, so the deck doubles as a one-slide-per-feature showcase. This
+theme is **dark only**, so there is a single set of screenshots (no light/dark
+pairing).
 
 ```bash
-npm run screenshots   # writes ../screenshots/<layout>.png + <layout>-dark.png
+npm run screenshots   # writes ../screenshots/<name>.png
 ```
 
-Light uses the deck as authored (`colorSchema: light`); the dark set is exported
-from a temporary copy with `colorSchema` flipped to `dark` (see
-[`generate-screenshots.mjs`](generate-screenshots.mjs)). This runs
-`slidev export --format png` under the hood and renames the output to semantic
-filenames. It
-requires `playwright-chromium`, which is a dev dependency here and installs its
-Chromium binary automatically on `npm install`; if the binary is missing, run
+This runs `slidev export --format png` under the hood (see
+[`generate-screenshots.mjs`](generate-screenshots.mjs)) and renames the output to
+semantic filenames, in the order the slides appear in `slides.md`. It requires
+`playwright-chromium`, which is a dev dependency here and installs its Chromium
+binary automatically on `npm install`; if the binary is missing, run
 `npx playwright install chromium`. Commit the regenerated PNGs when the theme's
-look changes. The slide images use the committed placeholder photo at
-[`public/image.jpg`](public/image.jpg), so screenshots are reproducible and offline.
+look changes.
