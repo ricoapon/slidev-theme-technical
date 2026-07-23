@@ -1,0 +1,19 @@
+{
+  "name": "test",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "slidev build",
+    "dev": "slidev --open",
+    "export": "slidev export",
+    "screenshots": "node generate-screenshots.mjs"
+  },
+  "dependencies": {
+    "@ricoapon/slidev-theme-technical": "file:..",
+    "@slidev/cli": "^52.16.0",
+    "vue": "^3.5.33"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.50.0"
+  }
+}
