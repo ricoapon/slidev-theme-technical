@@ -9,116 +9,82 @@ transition: fade
 layout: cover
 ---
 
-# Framed surfaces, <u>one accent</u>
+# Slides for <u>technical talks</u>
 
-An editor-at-night aesthetic for technical talks — monospace, near-black, and a
-single accent hue running through the deck.
+A monospace, near-black Slidev theme — a calm, consistent home for your code,
+commands, and diagrams.
 
 ---
 layout: section
 no: '01'
 ---
 
-# The layout vocabulary
+# The section layout
 
 ---
 layout: default
 ---
 
-# What the theme ships
+# The default layout
 
-* Seven fixed layouts — no bespoke layout per slide
-* Framed code blocks, with an optional filename
-* `<Terminal>` and `<Cursor>` for shell output
-* Themed Mermaid diagrams
-* One accent hex re-skins the whole deck
+Title plus a tight body — the workhorse for content slides. Reach for it when a
+claim needs a few supporting lines:
 
----
-layout: default
----
-
-# Code blocks are framed automatically
-
-````md title="slides.md"
-```ts title="server.ts"
-export const PORT = 8080
-```
-````
-
-Add `title="…"` to any fence and the filename shows in the bar — native to the
-code block, no component. Slidev's own code powers (line highlighting,
-magic-move, Monaco) work inside too; those are Slidev features, not the theme's.
-
----
-layout: default
----
-
-# `<Terminal>` renders shell output
-
-A plain `bash` block is fine and gets syntax highlighting. Use `<Terminal>` only
-when you want shell semantics — an accent caret and colored status.
-
-<Terminal title="~/app">
-
-```bash
-❯ pnpm build
-✓ built in 1.24s
-❯ pnpm test
-✗ 1 failed, 42 passed
-⚠ deprecated flag --legacy
-```
-
-</Terminal>
+* A short bulleted list
+* A few numbered steps
+* One small table or code block
 
 ---
 layout: two-cols
 ---
 
-# Text beside a surface
+# The two-cols layout
 
 ::left::
 
-* Prompt caret in the accent
-* Muted output lines
-* Semantic colors for status
+Text on one side, a framed panel on the other — a code window, a diagram, or a
+terminal. Keep the text to a few short lines.
 
 ::right::
 
-<Terminal title="~/deploy">
-
-```bash
-❯ kubectl apply -f app.yaml
-service/app created
-✓ rollout complete
+```ts title="user.ts"
+export interface User {
+  id: string
+  name: string
+  email: string
+}
 ```
-
-</Terminal>
 
 ---
 layout: full
 ---
 
-# The hero: one surface, full screen
+# The full layout
 
-<Terminal title="~/observability" fill>
+```yaml title="docker-compose.yml"
+services:
+  api:
+    build: .
+    ports:
+      - '8080:8080'
+    environment:
+      NODE_ENV: production
+    depends_on:
+      - db
+  db:
+    image: postgres:16
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
-```bash
-❯ tail -f api.log
-[12:04:01] GET /health 200 2ms
-[12:04:02] GET /users 200 34ms
-[12:04:02] POST /users 201 88ms
-[12:04:03] GET /users/42 200 11ms
-[12:04:04] GET /users/99 404 6ms
-[12:04:05] GET /health 200 2ms
+volumes:
+  pgdata: {}
 ```
-
-</Terminal>
 
 ---
 layout: center
 ---
 
-# Themed Mermaid diagrams
+# The center layout
 
 ```mermaid {scale: 1.35}
 graph LR
@@ -132,7 +98,52 @@ graph LR
 layout: statement
 ---
 
-# One accent. <u>Everywhere.</u> <Cursor />
+# One idea. <u>Nothing else.</u> <Cursor />
+
+---
+layout: default
+---
+
+# Framed code blocks
+
+Every fenced block is framed automatically with the window chrome. Add
+`title="…"` for a filename.
+
+```ts title="server.ts"
+import { createServer } from 'node:http'
+
+const server = createServer((req, res) => res.end('ok'))
+server.listen(8080, () => console.log('listening on :8080'))
+```
+
+---
+layout: two-cols
+---
+
+# Code block or `<Terminal>`?
+
+::left::
+
+A plain code block — for source and commands you don't need to color.
+
+```bash title="deploy.sh"
+npm run build
+npm run deploy -- --prod
+```
+
+::right::
+
+`<Terminal>` — when the output *states* carry the point.
+
+<Terminal title="~/app">
+
+```bash
+❯ npm run deploy -- --prod
+✓ deployed in 3.2s
+✗ health check failed
+```
+
+</Terminal>
 
 ---
 layout: default
@@ -161,11 +172,11 @@ Errors and removals use red — <span class="bad">✗ failed</span>.
 layout: default
 ---
 
-# Tabular everything
+# Tables
 
-| Service   | Version | Latency | Status         |
-|-----------|---------|---------|----------------|
-| gateway   | 1.4.2   |    2 ms | <span class="ok">✓ ok</span>   |
-| api       | 2.0.0   |   34 ms | <span class="ok">✓ ok</span>   |
+| Service   | Version | Latency | Status                           |
+|-----------|---------|---------|----------------------------------|
+| gateway   | 1.4.2   |    2 ms | <span class="ok">✓ ok</span>     |
+| api       | 2.0.0   |   34 ms | <span class="ok">✓ ok</span>     |
 | worker    | 0.9.1   |  120 ms | <span class="warn">⚠ slow</span> |
 | legacy    | 0.3.0   |    — ms | <span class="bad">✗ down</span>  |

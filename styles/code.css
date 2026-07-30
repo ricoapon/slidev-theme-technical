@@ -16,7 +16,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 4px;
-  padding: 0.1em 0.4em;
+  padding: 0.05em 0.25em;
   color: var(--text);
 }
 

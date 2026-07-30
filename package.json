@@ -5,7 +5,12 @@
   "description": "Personal Slidev theme for technical talks.",
   "keywords": [
     "slidev-theme",
-    "slidev"
+    "slidev",
+    "theme",
+    "dark",
+    "monospace",
+    "technical",
+    "presentation"
   ],
   "license": "MIT",
   "author": "Rico Apon",

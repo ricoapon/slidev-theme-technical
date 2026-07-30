@@ -8,7 +8,7 @@ import { defineShikiSetup } from '@slidev/types'
 //   ```ts title="server.ts"
 // and the filename shows in the window chrome bar (rendered by CSS from the
 // `data-title` attribute). This is why the theme needs no <Window> component —
-// labelling a surface is a property of the code block itself.
+// labelling a panel is a property of the code block itself.
 export default defineShikiSetup(() => ({
   themes: {
     dark: 'vitesse-dark',
@@ -19,7 +19,7 @@ export default defineShikiSetup(() => ({
       name: 'code-title',
       pre(node) {
         const raw = (this.options as any)?.meta?.__raw ?? ''
-        const match = /(?:title|filename)="([^"]+)"/.exec(raw)
+        const match = /title="([^"]+)"/.exec(raw)
         if (match) node.properties['data-title'] = match[1]
       },
     },
