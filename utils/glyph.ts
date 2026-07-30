@@ -1,4 +1,4 @@
-// The signature prompt glyph placed before titles (STYLE_GUIDE §3/§4). It is a
+// The signature prompt glyph placed before titles. It is a
 // per-deck choice set once via `themeConfig.glyph` — `❯` (default), `$` or `#`.
 //
 // Returns the value already wrapped in quotes so it is a valid CSS `content`

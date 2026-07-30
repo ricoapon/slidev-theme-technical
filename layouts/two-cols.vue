@@ -2,8 +2,7 @@
      Slots:
        (default slot) → an optional title/header spanning both columns
        ::left::        → left column
-       ::right::       → right column
-     STYLE_GUIDE §5. Alternate which side the surface sits on across a run. -->
+       ::right::       → right column -->
 <template>
   <div
     class="slidev-layout two-cols"

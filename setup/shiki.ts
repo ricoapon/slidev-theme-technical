@@ -1,6 +1,6 @@
 import { defineShikiSetup } from '@slidev/types'
 
-// Syntax highlighting (STYLE_GUIDE §3): one low-saturation dark theme, set once
+// Syntax highlighting: one low-saturation dark theme, set once
 // in the theme, not per deck. `vitesse-dark` keeps code quiet so the single
 // accent stands out. This is dark-only, so both keys point at the dark theme.
 //

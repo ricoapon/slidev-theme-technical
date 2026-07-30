@@ -6,10 +6,10 @@
  * ------------------------------------------------------------------ */
 
 :root {
-  /* The single typeface — one place to change the whole stack (STYLE_GUIDE §4). */
+  /* The single typeface — one place to change the whole stack. */
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  /* Monochrome base — structure. No meaning. (STYLE_GUIDE §3) */
+  /* Monochrome base — structure. No meaning. */
   --bg: #0d0e12;
   --surface: #16181d;
   --text: #e8e8ea;
@@ -22,7 +22,7 @@
   --c-error: #ff5555;   /* ✗  - removed lines  stderr  danger */
   --c-warning: #e3b341;  /* warnings, deprecations */
 
-  /* Type scale (STYLE_GUIDE §4). */
+  /* Type scale. */
   --fs-display: 3.5rem;
   --fs-title: 2.25rem;
   --fs-body: 1.05rem;
@@ -89,7 +89,7 @@ body {
   line-height: 1.6;
 }
 
-/* Everything is JetBrains Mono (STYLE_GUIDE §1/§4). Slidev applies its default
+/* Everything is JetBrains Mono. Slidev applies its default
  * sans stack to `.slidev-layout`, which every heading/body element inherits.
  * The doubled class (specificity 0,2,0) re-asserts the mono font over that rule
  * regardless of stylesheet order, so it cascades to all descendants. The mono

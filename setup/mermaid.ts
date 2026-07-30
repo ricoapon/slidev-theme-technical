@@ -1,6 +1,6 @@
 import { defineMermaidSetup } from '@slidev/types'
 
-// Mermaid theming (STYLE_GUIDE §6.5). Base `dark` theme, then the palette is
+// Mermaid theming. Base `dark` theme, then the palette is
 // pulled toward the theme tokens: surface-colored nodes, mono font, hairline
 // lines. The accent for the focused node is themed with themeCSS below (NOT
 // external CSS): it is injected as a <style> INSIDE the SVG, which is what makes
@@ -26,7 +26,7 @@ export default defineMermaidSetup(() => ({
     clusterBorder: '#8a8f98',
   },
   // Mark the focused node with `class NodeId accent` and it takes the accent —
-  // the one highlighted element, theme-driven (STYLE_GUIDE §6.5).
+  // the one highlighted element, theme-driven.
   themeCSS: `
     .node.accent > rect,
     .node.accent > circle,

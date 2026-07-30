@@ -1,5 +1,5 @@
 <!--
-  Terminal — a code block rendered as terminal OUTPUT (STYLE_GUIDE §6.3). It is
+  Terminal — a code block rendered as terminal OUTPUT. It is
   not a live shell; it is a styled representation of a shell session, and it is
   optional: a plain ```bash code block is perfectly fine and gets Shiki
   highlighting. Reach for <Terminal> only when you want shell *semantics* that a

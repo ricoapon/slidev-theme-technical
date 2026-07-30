@@ -1,5 +1,5 @@
 <!-- center — a diagram or single figure that wants to be centered.
-     Short title + the figure. STYLE_GUIDE §5. -->
+     Short title + the figure. -->
 <template>
   <div
     class="slidev-layout center"

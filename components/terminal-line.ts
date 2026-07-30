@@ -1,4 +1,4 @@
-// Shared types + line classification for <Terminal> (STYLE_GUIDE §6.3).
+// Shared types + line classification for <Terminal>.
 //
 // A <Terminal> is not a live shell — it is a styled representation of shell
 // output. Each raw line is classified by its leading token into one of the
@@ -23,7 +23,7 @@ export interface TerminalLine {
 // The prompt glyphs a leading token is recognised as a command prompt.
 const DEFAULT_PROMPTS = ['❯', '$', '#'] as const
 
-// The leading tokens that map onto the semantic colors (STYLE_GUIDE §3).
+// The leading tokens that map onto the semantic colors.
 const SUCCESS = new Set(['✓', '+'])
 const ERROR = new Set(['✗', '✕', '✘', '-'])
 const WARNING = new Set(['⚠', '!'])
