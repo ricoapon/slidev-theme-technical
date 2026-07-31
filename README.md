@@ -70,8 +70,7 @@ Install the theme:
 npm install @ricoapon/slidev-theme-technical
 ```
 
-Then point your deck's headmatter at it (Slidev will also offer to install it
-automatically on first run):
+Then point your deck's headmatter at it:
 
 ```yaml
 ---
@@ -85,12 +84,12 @@ transition: fade
 
 That is the entire configuration:
 
-| Key                  | Default   | Notes                                              |
-|----------------------|-----------|----------------------------------------------------|
-| `themeConfig.accent` | `#BD93F9` | A single hex — the deck's one accent hue.          |
-| `themeConfig.glyph`  | `❯`       | The prompt glyph before titles. Also `$` or `#`.   |
-| `colorSchema`        | `dark`    | Dark only.                                          |
-| `transition`         | `fade`    | Set once; keep it quiet (`fade` or `slide-left`).  |
+| Key                  | Default   | Notes                                             |
+|----------------------|-----------|---------------------------------------------------|
+| `themeConfig.accent` | `#BD93F9` | A single hex — the deck's one accent hue.         |
+| `themeConfig.glyph`  | `❯`       | The prompt glyph before titles. Also `$` or `#`.  |
+| `colorSchema`        | `dark`    | Dark only.                                        |
+| `transition`         | `fade`    | Set once; keep it quiet (`fade` or `slide-left`). |
 
 Suggested accents, all legible on the near-black background:
 
@@ -115,15 +114,15 @@ npx skills add ricoapon/slidev-theme-technical
 
 ## Layouts
 
-| Layout      | Use it for…                                       | Slots / frontmatter     |
-|-------------|---------------------------------------------------|-------------------------|
-| `cover`     | Title slide, deck identity                        |                         |
-| `section`   | Section breaks — the "breath" slides              | `no:`                   |
-| `statement` | One punchy claim, 3–6 words, centered             |                         |
-| `default`   | Title + a short list, steps, or small structure   |                         |
-| `two-cols`  | Text beside a panel (terminal / code / diagram)   | `::left::` · `::right::` |
-| `full`      | A single panel filling the screen (hero mode)     |                         |
-| `center`    | A diagram or single figure, centered              |                         |
+| Layout      | Use it for…                                     | Slots / frontmatter      |
+|-------------|-------------------------------------------------|--------------------------|
+| `cover`     | Title slide, deck identity                      |                          |
+| `section`   | Section breaks — the "breath" slides            | `no:`                    |
+| `statement` | One punchy claim, 3–6 words, centered           |                          |
+| `default`   | Title + a short list, steps, or small structure |                          |
+| `two-cols`  | Text beside a panel (terminal / code / diagram) | `::left::` · `::right::` |
+| `full`      | A single panel filling the screen (hero mode)   |                          |
+| `center`    | A diagram or single figure, centered            |                          |
 
 ## Components
 
@@ -171,13 +170,13 @@ line is classified by its leading token:
 </Terminal>
 ```
 
-| Prop     | Type              | Notes                                              |
-|----------|-------------------|----------------------------------------------------|
-| `title`  | string            | Label in the bar (a path or filename)              |
-| `prompt` | string (`❯`)      | The prompt glyph to recognise / emphasise          |
-| `reveal` | boolean           | Bind each line to a click, to step through output  |
-| `cursor` | boolean           | Blinking cursor at the end of the last line        |
-| `fill`   | boolean           | Grow to fill the slide (for the `full` layout)     |
+| Prop     | Type         | Notes                                             |
+|----------|--------------|---------------------------------------------------|
+| `title`  | string       | Label in the bar (a path or filename)             |
+| `prompt` | string (`❯`) | The prompt glyph to recognise / emphasise         |
+| `reveal` | boolean      | Bind each line to a click, to step through output |
+| `cursor` | boolean      | Blinking cursor at the end of the last line       |
+| `fill`   | boolean      | Grow to fill the slide (for the `full` layout)    |
 
 ### `<Cursor>`
 
@@ -188,9 +187,9 @@ after a statement to give an empty slide a sign of life.
 # One idea. <Cursor />
 ```
 
-| Prop    | Values                               | Notes                    |
-|---------|--------------------------------------|--------------------------|
-| `color` | `accent` (default) · `text` · a hex  | A raw hex is discouraged |
+| Prop    | Values                              | Notes                    |
+|---------|-------------------------------------|--------------------------|
+| `color` | `accent` (default) · `text` · a hex | A raw hex is discouraged |
 
 ### Mermaid diagrams
 
@@ -225,13 +224,13 @@ set: `<span class="ok">✓</span>`, `<span class="warn">⚠</span>`,
 
 The semantic set is fixed and always means the same thing:
 
-| Meaning         | Color     | Used for                                             |
-|-----------------|-----------|------------------------------------------------------|
-| Success / added | `#50FA7B` | `✓` `+`, passing, added lines, `tip`                 |
-| Error / removed | `#FF5555` | `✗` `-`, failures, stderr, removed lines, `danger`   |
-| Warning         | `#E3B341` | warnings, deprecations, `warning`                    |
-| Info            | *accent*  | note/info callouts, neutral emphasis                 |
-| Comment / muted | `#5A5F68` | secondary output, timestamps                         |
+| Meaning         | Color     | Used for                                           |
+|-----------------|-----------|----------------------------------------------------|
+| Success / added | `#50FA7B` | `✓` `+`, passing, added lines, `tip`               |
+| Error / removed | `#FF5555` | `✗` `-`, failures, stderr, removed lines, `danger` |
+| Warning         | `#E3B341` | warnings, deprecations, `warning`                  |
+| Info            | *accent*  | note/info callouts, neutral emphasis               |
+| Comment / muted | `#5A5F68` | secondary output, timestamps                       |
 
 ## Typography and utilities
 
