@@ -122,3 +122,14 @@
 .slidev-layout.center img {
   margin: 0 auto;
 }
+
+/* The centred layouts set `text-align: center`, which would otherwise leak into
+ * code blocks and terminals and centre their lines — never what a shell session
+ * or a fenced block wants. The centring stays a block-level concern (the box is
+ * still auto-margined above); the text inside reads left-aligned as usual. */
+.slidev-layout.center .slidev-code-wrapper,
+.slidev-layout.center .term,
+.slidev-layout.statement .slidev-code-wrapper,
+.slidev-layout.statement .term {
+  text-align: left;
+}
