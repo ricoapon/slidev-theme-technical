@@ -98,7 +98,7 @@ graph LR
 layout: statement
 ---
 
-# One idea. <u>Nothing else.</u> <Cursor />
+# One idea. <u>Nothing else.</u>
 
 ---
 layout: default
